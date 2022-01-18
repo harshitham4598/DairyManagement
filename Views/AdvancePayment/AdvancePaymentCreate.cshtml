@@ -1,0 +1,422 @@
+﻿@model MilkDairy.Models.AdvancePayment
+@{
+    ViewBag.Title = "Milk Aquirement";
+}
+
+<div class="loading" style="display:none">Loading</div>
+
+<style>
+    .centre {
+        font-weight: 600;
+    }
+</style>
+
+<div class="card margin-top-20">
+    <div class="card-header">
+        Advance Payment 
+    </div>
+    <div class="card-body">
+        @using (Ajax.BeginForm("Save", "AdvancePayment", new AjaxOptions { HttpMethod = "POST" }, new { id = "Form", @class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.member_id, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.member_id, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.member_id, new { htmlAttributes = new { @class = "form-control", @id = "mem_id", @placeholder = "Enter Member ID" } })
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.member_name, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.member_name, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.member_name, new { htmlAttributes = new { @class = "form-control", @id = "member_name", @placeholder = "Enter Member Name" } })
+                </div>
+
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.nominee_name, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.nominee_name, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.nominee_name, new { htmlAttributes = new { @class = "form-control", @id = "nominee_name", @placeholder = "Enter  Father Name" } })
+                </div>
+
+          
+                
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.date, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", @id = "address", @placeholder = "Enter Address" } })
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.phone_no, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.phone_no, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.phone_no, new { htmlAttributes = new { @class = "form-control", @id = "phone", @placeholder = "Enter Phone" } })
+
+                </div>
+
+                
+ 
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.amount, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.amount, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter  Amount  " } })
+                </div>
+
+
+                <div class="col-md-3 margin-top-30" style="float:right;">
+                    @if (Model.slno == 0)
+                    {
+                        <div style="float:right">
+                            <button type="submit" class="btn btn-col">Save</button>
+                            <button type="reset" class="btn btn-col">Reset</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class=" " style="float:right">
+                            <input type="submit" value="Update" class="btn btn-col" />
+                        </div>
+                    }
+
+
+                </div>
+                @Html.HiddenFor(model => model.slno)
+                @Html.HiddenFor(model => model.status)
+            </div>
+
+            <div class="  margin-top-10">
+                <table class="table table-bordered table-hover data" id="Datatable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+
+              
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td class="centre"></td>
+                            <td class="centre"></td>
+                            <td></td>
+                            <td class="centre"></td>
+                            <td></td>  
+                            <td></td>               
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+
+
+    </div>
+    <div class="card-footer">
+        <div class="panel-footer">
+            @Html.ActionLink("New", "AdvancePaymentCreate", null, new { id = "backLink" }) &nbsp; /&nbsp;
+            @Html.ActionLink("Back to list", "Fetch", null, new { id = "backLink" })
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/Moment")
+
+
+    <script>
+    $(document).ready(function () {
+
+        var table = $('#Datatable').DataTable({
+            ajax: {
+                url: "@Url.Action("FetchJson")",
+                dataSrc:""
+            },
+            lengthMenu: [[3, 5, 10, -1], [3, 5, 10, "ALL"]],
+            responsive: true,
+
+            columns: [
+                {
+                    data: "member_id"
+                },
+                 {
+                     data: "member_name"
+                 },
+                     {
+                         data: "phone_no"
+                     },
+                     {
+                         data: "date",
+                         render: function (d) {
+                             return moment(d).format("DD/MM/YYYY");
+                         }
+
+                     },
+                      {
+                          data: "amount"
+                      },
+                       {
+                           data: "status"
+                       },
+                        
+
+                {
+                    data: "slno",
+                    render: function (data) {
+                        return '<button type="button" class="w3-white btn btn-primary btn-sm p-delete bg-danger "  data-profam-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-delete-bin-24.png" /></button><button type="button" class="margin-left btn  btn-info btn-sm btnside p-edit"  data-pro-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-edit-24.png" /></i></button>'
+                    }
+                }
+
+            ],
+              "footerCallback": function (row, data, start, end, display) {
+                  var api = this.api(), data;
+
+                  // converting to interger to find total
+                  var intVal = function (i) {
+                      return typeof i === 'string' ?
+                          i.replace(/[\$,]/g, '') * 1 :
+                          typeof i === 'number' ?
+                          i : 0;
+                  };
+                  // computing column Total of the complete result
+                  var AmtTotal = api
+                         .column(4)
+                         .data()
+                         .reduce(function (a, b) {
+                             return intVal(a) + intVal(b);
+                         }, 0);
+                  var litre = api
+                       .column(2)
+                       .data()
+                       .reduce(function (a, b) {
+                           return intVal(a) + intVal(b);
+                       }, 0);
+                  $(api.column(1).footer()).html('Total');
+                  //$(api.column(2).footer()).html(litre.toFixed(2));
+                  $(api.column(4).footer()).html(AmtTotal.toFixed(2));
+                   
+              }
+        })
+
+
+        $('#Datatable').on("click", ".p-delete", function () {
+            var button = $(this)
+            bootbox.confirm("Are you sure to delete this?", function (result) {
+                if (result) {
+                    var id = button.attr('data-profam-id')
+                    $.ajax({
+                        url: '/AdvancePayment/Delete/?id=' + id,
+                        type: 'POST',
+                        dataType: 'json'
+                    }).done(function (res) {
+                        if (res) {
+                            table.row(button.parent('tr')).remove().draw()
+                            table.ajax.reload()
+
+                            toastr.success("deleted Successfully", "Success", { positionClass: "toast-top-center" })
+                        } else {
+                            toastr.error("deletion failed", "ERROR", { positionClass: "toast-top-center" })
+                        }
+
+
+                    }).fail(function () {
+                        toastr.error("Server Error", "ERROR", { positionClass: "toast-top-center" })
+
+                    })
+                } else {
+
+                }
+            })
+        })
+        $('#Datatable').on("click", ".p-edit", function () {
+            var button = $(this)
+            var id = button.attr('data-pro-id')
+            document.location.href = '/AdvancePayment/Edit/?id=' + id
+        })
+
+        //saving
+        $('#Form').submit(function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation()
+            if ($('#Form').valid()) {
+                var action = $('#Form').attr('action')
+                var data = new FormData($('#Form').get(0));
+                $('.loading').show()
+                $.ajax({
+                    url: action,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.Success) {
+                            table.ajax.reload()
+                            $('.loading').hide();
+                            $('#Form').trigger("reset");
+                            toastr.success(result.Message, "Success", { positionClass: "toast-top-center" })
+                        }
+                        else {
+                            $('.loading').hide();
+                            toastr.error(result.Message, "Error", { positionClass: "toast-top-center" })
+                        }
+                        //setTimeout(function () {
+                        //    window.location.href = "/Master_keonicscompany/keonics";
+                        //}, 80)
+                    },
+                    error: function () {
+                        $('.loading').hide()
+                        toastr.error("Server Error", "Error", { positionClass: "toast-top-center" })
+                    }
+                })
+            }
+        })
+
+
+        $('#litre').on('keyup', function () {
+
+            var litre = parseFloat($(this).val())
+            var price = parseFloat($('#price').val())
+            var total = (price * litre)
+            $('#total').val(total.toFixed(2));
+
+
+        })
+
+
+        $('#mem_id').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/MilkAquirement/MemberSearch/',
+                    data: "{'query': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var member_id = item.member_id;
+                            var member_name = item.member_name;
+                            var nominee_name = item.nominee_name;
+                             var phone_no = item.phone_no;
+                             var address = item.address;
+
+                            map[member_id] =
+                                {
+                                    member_id: member_id,
+                                    member_name: member_name,
+                                    nominee_name: nominee_name,
+                                    phone_no: phone_no,
+                                    address: address,
+                                };
+                            items.push(member_id);
+                        });
+                        response(items);
+                    },
+                    error: function (response) {
+                        toastr.error(response.responseText);
+                    },
+                    failure: function (response) {
+                        toastr.error(response.responseText);
+                    }
+                });
+            },
+
+
+            updater: function (item) {
+                $('#mem_id').val(map[item].member_id);
+                $('#member_name').val(map[item].member_name);
+                $('#nominee_name').val(map[item].nominee_name);
+                $('#phone').val(map[item].phone_no);
+                $('#address').val(map[item].address);
+              //  $('#litre').focus();
+                return item;
+            }
+        })
+
+
+        $('#member_name').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/MilkAquirement/MemberSearchName/',
+                    data: "{'query': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var member_id = item.member_id;
+                            var member_name = item.member_name;
+                            var nominee_name = item.nominee_name;
+                            var phone_no = item.phone_no;
+                            var address = item.address;
+                            map[member_name] =
+                                {
+                                    member_name: member_name,
+                                    member_id: member_id,
+                                    nominee_name: nominee_name,
+                                    phone_no: phone_no,
+                                    address: address,
+                                };
+                            items.push(member_name);
+                        });
+                        response(items);
+                    },
+                    error: function (response) {
+                        toastr.error(response.responseText);
+                    },
+                    failure: function (response) {
+                        toastr.error(response.responseText);
+                    }
+                });
+            },
+
+
+            updater: function (item) {
+                $('#mem_id').val(map[item].member_id);
+                $('#member_name').val(map[item].member_name);
+                $('#nominee_name').val(map[item].nominee_name);
+                $('#phone').val(map[item].phone_no);
+                $('#address').val(map[item].address);
+                return item;
+            }
+        })
+
+
+
+
+
+
+
+
+    })
+    </script>
+
+
+
+}

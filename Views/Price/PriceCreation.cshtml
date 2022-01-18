@@ -1,0 +1,210 @@
+﻿@model MilkDairy.Models.Prices
+@{
+    ViewBag.Title = "Price Creation";
+}
+<div class="loading" style="display:none">Loading</div>
+<div class="card margin-top-20">
+    <div class="card-header">
+        User Creation
+    </div>
+    <div class="card-body">
+        @using (Ajax.BeginForm("Save", "Price", new AjaxOptions { HttpMethod = "POST" }, new { id = "Form", @class = "needs-validation" }))
+        {
+     
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                
+
+
+                <div class="col-md-12" style="float:right;">
+                    @if (Model.slno == 0)
+                    {
+                        <div style="float:right">
+                            <button type="submit" class="btn btn-col">Save</button>
+                            <button type="reset" class="btn btn-col">Reset</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class=" " style="float:right">
+                            <input type="submit" value="Update" class="btn btn-col" />
+                        </div>
+                    }
+
+
+                </div>
+                @Html.HiddenFor(model => model.slno)
+            </div>
+
+            <div class="card-body margin-top-20">
+                <table class="table table-bordered table-hover data" id="Datatable">
+                    <thead>
+                        <tr>
+                          
+                          <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+    <div class="card-footer">
+        <div class="panel-footer">
+            @Html.ActionLink("New", "AdminCreation", null, new { id = "backLink" })
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            var table = $('#Datatable').DataTable({
+                ajax: {
+                    url: "@Url.Action("Fetch")",
+                dataSrc:""
+            },
+                lengthMenu: [[3, 5, 10, -1], [3, 5, 10, "ALL"]],
+            responsive: true,
+
+            columns: [
+               
+                  {
+                      data: "price"
+                  },  
+                {
+                    data: "slno",
+                    render: function (data) {
+                        return '<button type="button" class="w3-white btn btn-primary btn-sm p-delete bg-danger "  data-profam-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-delete-bin-24.png" /></button><button type="button" class="margin-left btn  btn-info btn-sm btnside p-edit"  data-pro-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-edit-24.png" /></i></button>'
+                    }
+                }
+
+            ]
+        })
+
+
+            $('#Datatable').on("click", ".p-delete", function () {
+                var button = $(this)
+                bootbox.confirm("Are you sure to delete this?", function (result) {
+                    if (result) {
+                        var id = button.attr('data-profam-id')
+                        $.ajax({
+                            url: '/Price/Delete/?id=' + id,
+                            type: 'POST',
+                            dataType: 'json'
+                        }).done(function (res) {
+                            if (res) {
+                                table.row(button.parent('tr')).remove().draw()
+                                table.ajax.reload()
+
+                                toastr.success("deleted Successfully", "Success", { positionClass: "toast-top-center" })
+                            } else {
+                                toastr.error("deletion failed", "ERROR", { positionClass: "toast-top-center" })
+                            }
+
+
+                        }).fail(function () {
+                            toastr.error("Server Error", "ERROR", { positionClass: "toast-top-center" })
+
+                        })
+                    } else {
+
+                    }
+                })
+            })
+            $('#Datatable').on("click", ".p-edit", function () {
+                var button = $(this)
+                var id = button.attr('data-pro-id')
+                document.location.href = '/Price/Edit/?id=' + id
+            })
+
+            //saving
+            $('#Form').submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation()
+                if ($('#Form').valid()) {
+                    var action = $('#Form').attr('action')
+                    var data = new FormData($('#Form').get(0));
+                    $('.loading').show()
+                    $.ajax({
+                        url: action,
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.Success) {
+                                table.ajax.reload()
+                                $('.loading').hide();
+                                $('#Form').trigger("reset");
+                                toastr.success(result.Message, "Success", { positionClass: "toast-top-center" })
+                            }
+                            else {
+                                $('.loading').hide();
+                                toastr.error(result.Message, "Error", { positionClass: "toast-top-center" })
+                            }
+                            
+                        },
+                        error: function () {
+                            $('.loading').hide()
+                            toastr.error("Server Error", "Error", { positionClass: "toast-top-center" })
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

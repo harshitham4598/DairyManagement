@@ -1,0 +1,120 @@
+﻿@model IEnumerable<MilkDairy.Models.MemberCreation>
+@{
+    ViewBag.Title = "Member List";
+}
+
+<div class="loading" style="display:none">Loading</div>
+<a href="@Url.Action("MemberCreation")" class="btn btn-col margin-top-20"><i class=" glyphicon glyphicon-plus-sign"></i>New Member</a>
+
+<div class="card margin-top-20">
+    <div class="card-header">
+        <i class="fa fa-user" aria-hidden="true"></i>
+        Member List
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover" id="Pro">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>                 
+                    <th>Phone</th>
+                    <th>Bank</th>
+                    <th>Acc No.</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var menu in Model)
+                {
+                    <tr>
+                        <td>@menu.member_id </td>
+                        <td>@menu.member_name </td>                    
+                        <td>@menu.phone_no </td>
+                        <td>@menu.bank_name </td>
+                        <td>@menu.acc_no </td>
+
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = menu.member_id })" class="btn btn-sm btn-info">
+                                <i><img src="../Content/Ninestars/assets/img/icons8-edit-24.png" /></i>
+                            </a>
+                            <button class="btn btn-sm p-delete btn-primary" data-profam-id="@menu.member_id">
+                                <i><img src="../Content/Ninestars/assets/img/icons8-delete-bin-24.png" /></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+            $(document).ready(function () {
+
+                var table = $('#Pro').DataTable({
+                    lengthMenu: [[10, 15, 20, -1], [10, 15, 20, "ALL"]],
+                    responsive: true
+                });
+
+
+                $('#Pro').on("click", ".p-delete", function () {
+                    var button = $(this)
+
+                    bootbox.confirm({
+
+                        message: '<i class="fa fa-question-circle" aria-hidden="true"></i> Are you sure to delete this for ever.. ?',
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: "btn-defalut"
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: "btn-primary"
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                var id = button.attr('data-profam-id')
+                                $.ajax({
+                                    url: '/master_Division/Delete_Division/?de_id=' + id,
+                                    type: 'POST',
+                                    dataType: 'json'
+                                }).done(function (res) {
+                                    if (res) {
+                                        table.row(button.parents('tr')).remove().draw()
+                                        toastr.success("Division Deleted Successfully", "Success", { positionClass: "toast-top-center" })
+                                    } else {
+                                        toastr.error("Division Delete failed", "ERROR", { positionClass: "toast-top-center" })
+                                    }
+
+                                }).fail(function () {
+                                    toastr.error("Server Error", "ERROR", { positionClass: "toast-top-center" })
+                                })
+                            } else {
+
+                            }
+                        }
+                    });
+
+
+                })
+            })
+    </script>
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,547 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+ 
+    <style type="text/css">
+
+        body{
+            background-color:#dfe7f0;
+        }
+
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            background-color: #326690;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+            .sidebar a {
+                display: block;
+                color: white;
+                padding: 16px;
+                text-decoration: none;
+                font-size:14px;
+            }
+
+                .sidebar a.active {
+                  background-color: #326690;
+                    color: white;
+                 
+                }
+
+                .sidebar a:hover:not(.active) {
+                    background-color: #f1f1f1;
+                    color: black;
+                       font-weight:bold;
+                       font-size:16px;
+                }
+
+        div.content {
+            margin-left: 200px;
+            padding: 1px 16px;
+            height: 700px;
+        }
+               @@media screen and (max-width: 500px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+    /*.sidebar dropdown {float: left;}*/
+  div.content {margin-left: 0;}
+}
+
+@@media screen and (max-width: 500px) {
+  .sidebar a  {
+    text-align: center;
+    float: none;
+  }
+}
+/*@@media screen and (max-width: 600px) {
+  .sidebar dropdown  {
+    text-align: center;
+    float: none;
+  }
+}*/
+
+
+
+        .btn-color {
+            background-color: #f1f1f1;
+            color: black;
+        }
+
+         .btn-col{
+            background-color:#326690;
+            color:white;
+        }
+         .pad{
+             padding:0px;
+         }
+         .margin-left{
+             margin-left:3px;
+         }
+          .form-control[readonly]{
+        background:white;
+        cursor: not-allowed;
+    }
+   /*table.dataTable thead th {
+    padding: 8px 18px;
+    border: 1px solid white;
+    color:white;
+    background-color:#326690;
+    box-decoration-break:slice;
+}
+ 
+
+   th, table.dataTable tbody td {
+    padding: 1px 10px;
+    font-size:12px;
+       
+}*/
+
+
+
+  /*calculator style*/ 
+.calculator {
+  padding: 20px;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 1px;
+} 
+.buttons {}
+
+.operators {}
+
+.operators div {
+  display: inline-block;
+  border: 1px solid #bbb;
+  border-radius: 1px;
+  width: 80px;
+  text-align: center;
+  padding: 10px;
+  margin: 20px 4px 10px 0;
+  cursor: pointer;
+  background-color: #ddd;
+  transition: border-color .2s ease-in-out, background-color .2s, box-shadow .2s;
+}
+
+.operators div:hover {
+  background-color: #ddd;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  border-color: #aaa;
+}
+
+.operators div:active {
+  font-weight: bold;
+}
+
+.leftPanel {
+  display: inline-block;
+}
+
+.numbers div {
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  width: 80px;
+  text-align: center;
+  padding: 10px;
+  margin: 10px 4px 10px 0;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: border-color .2s ease-in-out, background-color .2s, box-shadow .2s;
+}
+
+.numbers div:hover {
+  background-color: #f1f1f1;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  border-color: #bbb;
+}
+
+.numbers div:active {
+  font-weight: bold;
+}
+
+div.equal {
+  display: inline-block;
+  border: 1px solid #3079ED;
+  border-radius: 1px;
+  width: 17%;
+  text-align: center;
+  padding: 30px 0px;
+
+  vertical-align: top;
+  cursor: pointer; 
+  transition: all .2s ease-in-out; 
+}
+
+div.equal:hover {
+  background-color: #307CF9;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  border-color: #1857BB;
+}
+
+div.equal:active {
+  font-weight: bold;
+} 
+.margin-left{
+    margin-left:2px;
+}
+
+ 
+
+
+
+
+
+
+
+
+ 
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg  " style="background-color:#326690">
+        <h1 class="text-light"><a href="index.html" style="text-decoration:none;color:#f1f1f1;"><span>Dairy Needs</span></a></h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse " id="navbarColor01">
+            <ul class="navbar-nav ml-auto text-black-50" >
+                <li class="nav-item  ">
+                    <div class="btn-lg btn-color">
+                        @DateTime.Now.ToShortDateString()/ @Session["Time"] 
+                    </div>
+                </li>&nbsp;&nbsp;
+                <li class="nav-item active"> 
+                    <div class="btn-lg hov btn-color" >
+                        <a href="/Home/Index" style="color:black;text-decoration:none;">@Session["Admin"]/Logout<span class="sr-only">(current)</span></a>
+                    </div>
+                </li>          
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="sidebar">
+        <a href="/Home/About"> Dash Board</a>
+               
+        <div class="dropdown">
+            <button class="btn  btn-col dropdown-toggle" type="button" data-toggle="dropdown">
+                Master
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/AdminCreation/AdminCreation" style="color:black">User Creation</a></li>
+                <li><a href="/SocietyCreation/SocietyCreation" style="color:black">Dairy Creation</a></li>
+                <li><a href="/Price/PriceCreation" style="color:black">Price</a></li>
+                <li><a href="/Deposit/DepositeCreate" style="color:black">Deposit</a></li>
+             
+            </ul>
+        </div>
+           
+         
+
+        <a href="/MemberCreation/Fetch">Member Master</a>
+        <a href="/MilkAquirement/MilkAquirement">Milk Acquirement</a>
+        <a href="/Retail/Retail">Retail Sale</a>
+        <a href="/ExportToMainDairy/ExportMainDairy">Export to Dairy</a>
+        <a href="/FeedsIssue/FeedsIssue">Feeds Issue</a>   
+        <a href="/AdvancePayment/AdvancePaymentCreate">Advance Payment</a>    
+        <a href="#about">Reports</a> 
+        @*<a href="#about" btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModal">Calculator</a>*@
+        <a href="#about"><canvas id="canvas" width="160" height="160"
+        style="background-color:#326690"></canvas></a> <br />
+       
+     
+    </div>
+
+    <div class="content">
+        <div class="container">
+            @RenderBody()
+        </div>        
+    </div>
+
+
+
+     @*<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Calcuator</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"> 
+                    <div class="calculator">
+                        <div class="input form-control" style="text-align:right" id="input" ></div>
+                        <div class="buttons"> 
+                            <div class="operators">
+                                <div>+</div>
+                                <div>-</div>
+                                <div>&times;</div>
+                                <div>&divide;</div>
+                            </div> 
+                          <div class="row"> 
+                              <div class="col-md-10">
+                                  <div class="">
+                                      <div class="numbers">
+                                          <div>7</div>
+                                          <div>8</div>
+                                          <div>9</div>
+                                          <div id="clear">C</div>
+                                      </div>
+                                      <div class="numbers">
+                                          <div>4</div>
+                                          <div>5</div>
+                                          <div>6</div>
+                                          <div>.</div>
+                                      </div>
+                                      <div class="numbers">
+                                          <div>1</div>
+                                          <div>2</div>
+                                          <div>3</div>
+                                          <div>0</div>
+                                      </div> 
+                                  </div>
+                                  <div class="equal btn-info" style="font-weight:600" id="result">=</div>
+                              </div> 
+                          </div> 
+                        </div>
+                    </div>
+                </div>
+                 
+            </div>
+        </div>
+    </div>*@
+ 
+     <script>
+  
+var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var radius = canvas.height / 2;
+    ctx.translate(radius, radius);
+    radius = radius * 0.90
+    setInterval(drawClock, 1000);
+
+    function drawClock() {
+        drawFace(ctx, radius);
+        drawNumbers(ctx, radius);
+        drawTime(ctx, radius);
+    }
+
+    function drawFace(ctx, radius) {
+        var grad;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, 2*Math.PI);
+        ctx.fillStyle = '#326690';
+        ctx.fill();
+        grad = ctx.createRadialGradient(0,0,radius*0.95, 0,0,radius*1.05);
+        grad.addColorStop(0, 'white');
+        grad.addColorStop(0.5, '#326690');
+        grad.addColorStop(1, '#326690');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = radius*0.1;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, radius*0.1, 0, 2*Math.PI);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    }
+
+    function drawNumbers(ctx, radius) {
+        var ang;
+        var num;
+        ctx.font = radius*0.15 + "px arial";
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        for(num = 1; num < 13; num++){
+            ang = num * Math.PI / 6;
+            ctx.rotate(ang);
+            ctx.translate(0, -radius*0.85);
+            ctx.rotate(-ang);
+            ctx.fillText(num.toString(), 0, 0);
+            ctx.rotate(ang);
+            ctx.translate(0, radius*0.85);
+            ctx.rotate(-ang);
+        }
+    }
+
+    function drawTime(ctx, radius){
+        var now = new Date();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        //hour
+        hour=hour%12;
+        hour=(hour*Math.PI/6)+
+        (minute*Math.PI/(6*60))+
+        (second*Math.PI/(360*60));
+        drawHand(ctx, hour, radius*0.5, radius*0.07);
+        //minute
+        minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+        drawHand(ctx, minute, radius*0.8, radius*0.07);
+        // second
+        second=(second*Math.PI/30);
+        drawHand(ctx, second, radius*0.9, radius*0.02);
+    }
+
+    function drawHand(ctx, pos, length, width) {
+        ctx.beginPath();
+        ctx.lineWidth = width;
+        ctx.lineCap = "round";
+        ctx.moveTo(0,0);
+        ctx.rotate(pos);
+        ctx.lineTo(0, -length);
+        ctx.stroke();
+        ctx.rotate(-pos);
+    }
+    </script>
+
+     @*<script>
+  
+
+        var input = document.getElementById('input'), // input/output button
+          number = document.querySelectorAll('.numbers div'), // number buttons
+          operator = document.querySelectorAll('.operators div'), // operator buttons
+          result = document.getElementById('result'), // equal button
+          clear = document.getElementById('clear'), // clear button
+          resultDisplayed = false; // flag to keep an eye on what output is displayed
+
+        // adding click handlers to number buttons
+        for (var i = 0; i < number.length; i++) {
+            number[i].addEventListener("click", function (e) {
+
+                // storing current input string and its last character in variables - used later
+                var currentString = input.innerHTML;
+                var lastChar = currentString[currentString.length - 1];
+
+                // if result is not diplayed, just keep adding
+                if (resultDisplayed === false) {
+                    input.innerHTML += e.target.innerHTML;
+                } else if (resultDisplayed === true && lastChar === "+" || lastChar === "-" || lastChar === "×" || lastChar === "÷") {
+                    // if result is currently displayed and user pressed an operator
+                    // we need to keep on adding to the string for next operation
+                    resultDisplayed = false;
+                    input.innerHTML += e.target.innerHTML;
+                } else {
+                    // if result is currently displayed and user pressed a number
+                    // we need clear the input string and add the new input to start the new opration
+                    resultDisplayed = false;
+                    input.innerHTML = "";
+                    input.innerHTML += e.target.innerHTML;
+                }
+
+            });
+        }
+
+        // adding click handlers to number buttons
+        for (var i = 0; i < operator.length; i++) {
+            operator[i].addEventListener("click", function (e) {
+
+                // storing current input string and its last character in variables - used later
+                var currentString = input.innerHTML;
+                var lastChar = currentString[currentString.length - 1];
+
+                // if last character entered is an operator, replace it with the currently pressed one
+                if (lastChar === "+" || lastChar === "-" || lastChar === "×" || lastChar === "÷") {
+                    var newString = currentString.substring(0, currentString.length - 1) + e.target.innerHTML;
+                    input.innerHTML = newString;
+                } else if (currentString.length == 0) {
+                    // if first key pressed is an opearator, don't do anything
+                    console.log("enter a number first");
+                } else {
+                    // else just add the operator pressed to the input
+                    input.innerHTML += e.target.innerHTML;
+                }
+
+            });
+        }
+
+        // on click of 'equal' button
+        result.addEventListener("click", function () {
+
+            // this is the string that we will be processing eg. -10+26+33-56*34/23
+            var inputString = input.innerHTML;
+
+            // forming an array of numbers. eg for above string it will be: numbers = ["10", "26", "33", "56", "34", "23"]
+            var numbers = inputString.split(/\+|\-|\×|\÷/g);
+
+            // forming an array of operators. for above string it will be: operators = ["+", "+", "-", "*", "/"]
+            // first we replace all the numbers and dot with empty string and then split
+            var operators = inputString.replace(/[0-9]|\./g, "").split("");
+
+            console.log(inputString);
+            console.log(operators);
+            console.log(numbers);
+            console.log("----------------------------");
+
+            // now we are looping through the array and doing one operation at a time.
+            // first divide, then multiply, then subtraction and then addition
+            // as we move we are alterning the original numbers and operators array
+            // the final element remaining in the array will be the output
+
+            var divide = operators.indexOf("÷");
+            while (divide != -1) {
+                numbers.splice(divide, 2, numbers[divide] / numbers[divide + 1]);
+                operators.splice(divide, 1);
+                divide = operators.indexOf("÷");
+            }
+
+            var multiply = operators.indexOf("×");
+            while (multiply != -1) {
+                numbers.splice(multiply, 2, numbers[multiply] * numbers[multiply + 1]);
+                operators.splice(multiply, 1);
+                multiply = operators.indexOf("×");
+            }
+
+            var subtract = operators.indexOf("-");
+            while (subtract != -1) {
+                numbers.splice(subtract, 2, numbers[subtract] - numbers[subtract + 1]);
+                operators.splice(subtract, 1);
+                subtract = operators.indexOf("-");
+            }
+
+            var add = operators.indexOf("+");
+            while (add != -1) {
+                // using parseFloat is necessary, otherwise it will result in string concatenation :)
+                numbers.splice(add, 2, parseFloat(numbers[add]) + parseFloat(numbers[add + 1]));
+                operators.splice(add, 1);
+                add = operators.indexOf("+");
+            }
+
+            input.innerHTML = numbers[0]; // displaying the output
+
+            resultDisplayed = true; // turning flag if result is displayed
+        });
+
+        // clearing the input on press of clear
+        clear.addEventListener("click", function () {
+            input.innerHTML = "";
+        })
+    </script>*@
+  
+   
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+ 
+
+</body>
+</html>

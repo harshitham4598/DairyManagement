@@ -1,0 +1,251 @@
+﻿@model MilkDairy.Models.MemberCreation
+@{
+    ViewBag.Title = "Member Creation";
+}
+ 
+<div class="loading" style="display:none">Loading</div> 
+
+<div class="card margin-top-20">
+    <div class="card-header">
+        Member Creation
+    </div>
+    <div class="card-body">
+        @using (Ajax.BeginForm("Save", "MemberCreation", new AjaxOptions { HttpMethod = "POST" }, new { id = "Form", @class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.member_id, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.member_id, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.member_id, new { htmlAttributes = new { @class = "form-control aa", @readonly = "readonly" } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.member_name, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.member_name, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.member_name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Member Name" } })
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.nominee_name, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.nominee_name, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.nominee_name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Father Name" } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.dob, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.dob, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.dob, new { htmlAttributes = new { @class = "form-control",@type="date" } })
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.pan_card, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.pan_card, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.pan_card, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Pan Card" } })
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.gender, new[]{
+                                        new SelectListItem(){ Text = "Male", Value = "Male"},
+                                        new SelectListItem(){ Text = "Female", Value = "Female"}}, "Select", new { @class = "form-control" })
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.phone_no, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.phone_no, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.phone_no, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Phone No." } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Address" } })
+                </div>
+
+                </div>
+            <div class="row">
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.bank_name, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.bank_name, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.bank_name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Bank Name" } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.branch, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.branch, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.branch, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Branch Name" } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.acc_no, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.acc_no, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.acc_no, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Account No." } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.ifsc, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.ifsc, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.ifsc, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter IFSC Code" } })
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.adhar_no, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.adhar_no, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.adhar_no, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Adhar No." } })
+                </div>
+
+                <div class="col-md-12" style="float:right;">
+                    @if (Model.slno == 0)
+                    {
+                        <div style="float:right">
+                            <button type="submit" class="btn btn-col">Save</button>
+                            <button type="reset" class="btn btn-col">Reset</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class=" " style="float:right">
+                            <input type="submit" value="Update" class="btn btn-col" />
+                        </div>
+                    }
+
+
+                </div>
+                @Html.HiddenFor(model => model.slno)
+            </div>
+
+            @*<div class="card-body margin-top-20">
+                <table class="table table-bordered table-hover data" id="Datatable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Usertype</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>*@
+        }
+
+    </div>
+    <div class="card-footer">
+        <div class="panel-footer">
+            @Html.ActionLink("New", "MemberCreation", null, new { id = "backLink" }) &nbsp; /&nbsp;
+            @Html.ActionLink("Back to list", "Fetch", null, new { id = "backLink" })
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    $(document).ready(function () {
+
+        var table = $('#Datatable').DataTable({
+            ajax: {
+                url: "@Url.Action("Fetch")",
+                dataSrc:""
+            },
+            lengthMenu: [[3, 5, 10, -1], [3, 5, 10, "ALL"]],
+            responsive: true,
+
+            columns: [
+                {
+                    data: "name"
+                },
+                  {
+                      data: "user_name"
+                  },
+                    {
+                        data: "user_type"
+                    },
+
+                {
+                    data: "slno",
+                    render: function (data) {
+                        return '<button type="button" class="w3-white btn btn-primary btn-sm p-delete bg-danger "  data-profam-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-delete-bin-24.png" /></button><button type="button" class="margin-left btn  btn-info btn-sm btnside p-edit"  data-pro-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-edit-24.png" /></i></button>'
+                    }
+                }
+
+            ]
+        })
+
+
+        $('#Datatable').on("click", ".p-delete", function () {
+            var button = $(this)
+            bootbox.confirm("Are you sure to delete this?", function (result) {
+                if (result) {
+                    var id = button.attr('data-profam-id')
+                    $.ajax({
+                        url: '/AdminCreation/Delete/?id=' + id,
+                        type: 'POST',
+                        dataType: 'json'
+                    }).done(function (res) {
+                        if (res) {
+                            table.row(button.parent('tr')).remove().draw()
+                            table.ajax.reload()
+
+                            toastr.success("deleted Successfully", "Success", { positionClass: "toast-top-center" })
+                        } else {
+                            toastr.error("deletion failed", "ERROR", { positionClass: "toast-top-center" })
+                        }
+
+
+                    }).fail(function () {
+                        toastr.error("Server Error", "ERROR", { positionClass: "toast-top-center" })
+
+                    })
+                } else {
+
+                }
+            })
+        })
+        $('#Datatable').on("click", ".p-edit", function () {
+            var button = $(this)
+            var id = button.attr('data-pro-id')
+            document.location.href = '/AdminCreation/Edit/?id=' + id
+        })
+
+        //saving
+        $('#Form').submit(function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation()
+            if ($('#Form').valid()) {
+                var action = $('#Form').attr('action')
+                var data = new FormData($('#Form').get(0));
+                $('.loading').show()
+                $.ajax({
+                    url: action,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.Success) {
+                            table.ajax.reload()
+                            $('.loading').hide();
+                            $('#Form').trigger("reset");
+                            toastr.success(result.Message, "Success", { positionClass: "toast-top-center" })
+                        }
+                        else {
+                            $('.loading').hide();
+                            toastr.error(result.Message, "Error", { positionClass: "toast-top-center" })
+                        }
+                        //setTimeout(function () {
+                        //    window.location.href = "/Master_keonicscompany/keonics";
+                        //}, 80)
+                    },
+                    error: function () {
+                        $('.loading').hide()
+                        toastr.error("Server Error", "Error", { positionClass: "toast-top-center" })
+                    }
+                })
+            }
+        })
+    })
+    </script>
+
+
+
+}

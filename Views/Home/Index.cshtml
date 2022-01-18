@@ -1,0 +1,349 @@
+﻿@model MilkDairy.Models.Society_Creation
+@{
+
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Dairy Needs</title>
+    <meta content="" name="descriptison">
+    <meta content="" name="keywords">
+     
+    <!-- Favicons -->
+    <link href="~/Content/Ninestars/assets/img/sacred-cow.svg" rel="icon">
+    <link href="~/Content/Ninestars/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <!--<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">-->
+    <!-- Vendor CSS Files -->
+    <link href="~/Content/Ninestars/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/Ninestars/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="~/Content/Ninestars/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/Content/Ninestars/assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="~/Content/Ninestars/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/Content/Ninestars/assets/vendor/aos/aos.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/Content/Ninestars/assets/css/style.css" rel="stylesheet">
+
+
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <style>
+        .btn-primary{
+            background-color:#326690;
+        }
+        
+.btn-primary:hover {   
+   background: #265073;
+}
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container-fluid d-flex">
+
+            <div class="logo mr-auto">
+                <h1 class="text-light"><a href="index.html"><span>Dairy Needs</span></a></h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+            </div>
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    @*<li class="active"><a href="">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>*@                     
+                    <li class="get-started"><a href="" class="class=" btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModal">Login</a></li>
+                </ul>
+            </nav><!-- .nav-menu -->
+
+        </div>
+    </header><!-- End Header -->
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1">
+                    <h1 style="color:white">@Model.society_name</h1>
+                    <h2>@Model.village @Model.taluk @Model.district - @Model.pincode  </h2>
+                    <h5 style="color:#f8f9fa"> Automated Milk Production Software</h5>
+                
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 hero-img">
+                    <img src="~/Content/Ninestars/assets/img/cow-clipart.svg" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+
+    </section><!-- End Hero -->
+
+    @*<main id="main">
+
+        <!-- ======= About Section ======= -->
+        <section id="about" class="about">
+            <div class="container">
+
+                <div class="row justify-content-between">
+                    <div class="col-lg-5 d-flex align-items-center justify-content-center about-img">
+                        <img src="~/Content/Ninestars/assets/img/about-img.svg" class="img-fluid" alt="" data-aos="zoom-in">
+                    </div>
+                    <div class="col-lg-6 pt-5 pt-lg-0">
+                        <h3 data-aos="fade-up">Voluptatem dignissimos provident quasi</h3>
+                        <p data-aos="fade-up" data-aos-delay="100">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
+                        </p>
+                       
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End About Section -->
+        <!-- ======= Services Section ======= -->
+        <section id="services" class="services section-bg">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+               
+                    <p>Services</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
+                            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bx-file"></i></div>
+                            <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
+                            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bx-tachometer"></i></div>
+                            <h4 class="title"><a href="">Magni Dolores</a></h4>
+                            <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bx bx-world"></i></div>
+                            <h4 class="title"><a href="">Nemo Enim</a></h4>
+                            <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Services Section -->
+
+
+
+    </main><!-- End #main -->*@
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="container py-4">
+            <div class="copyright">
+                &copy; Developed <strong><span>DairyNeeds</span></strong>.
+            </div>
+
+        </div>
+    </footer><!-- End Footer -->
+
+    <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="~/Content/Ninestars/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/php-email-form/validate.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/venobox/venobox.min.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="~/Content/Ninestars/assets/vendor/aos/aos.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/Content/Ninestars/assets/js/main.js"></script>
+
+
+
+   
+
+    <!-- Modal -->
+    @using (Ajax.BeginForm("LoginVerify", "Home", new AjaxOptions { HttpMethod = "POST" }, new { id = "AreaRegForm" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Admin Login</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3 mb-md-0">
+                                <label class="font-weight-bold" for="fullname">User Name</label>
+                                <input type="text" id="email" name="user_name" required class="form-control" placeholder="user name">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="font-weight-bold" for="fullname">Password</label>
+                                <input type="password" id="pass" name="password" required class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                         
+                        <div style="float:right">
+                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    } 
+
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/toastr.js"></script>
+
+ 
+    <script>
+
+        //fetching data to dataTables
+
+        $(document).ready(function () {
+            //Saving
+
+            $('#AreaRegForm').submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation()
+                
+                    var action = $('#AreaRegForm').attr('action')
+                    var data = new FormData($('#AreaRegForm').get(0));
+                    $('.loading').show()
+                    $.ajax({
+                        url: action,
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.Success) {
+                                //  table.ajax.reload()
+                                //  $('.loading').hide();
+                                $('#AreaRegForm').trigger("reset");
+                                toastr.success(result.Message, "Success", { positionClass: "toast-top-center" })
+
+                                if (result.userType == "Admin") {
+                                    window.location.href = "@Url.Action("About", "Home")"
+                                } 
+                                else {
+                                    window.location.href = "@Url.Action("Index", "EmployeeRegister")"
+                                }
+
+                            }
+                            else {
+                                toastr.error(result.Message, "Error", { positionClass: "toast-top-center" })
+                            }
+                        },
+                        error: function () {
+                            $('.loading').hide()
+                            toastr.error("Server Error", "Error", { positionClass: "toast-top-center" })
+                        }
+                    })
+            
+            })
+
+
+
+            $('#RegForm').submit(function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation()
+                if ($('#RegForm').valid()) {
+                    var action = $('#RegForm').attr('action')
+                    var data = new FormData($('#RegForm').get(0));
+                    $('.loading').show()
+                    $.ajax({
+                        url: action,
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.Success) {
+                                //  table.ajax.reload()
+                                //  $('.loading').hide();
+                                $('#RegForm').trigger("reset");
+                                toastr.success(result.Message, "Success", { positionClass: "toast-top-center" })
+
+                                if (result.userType == "Employer") {
+                                    window.location.href = "@Url.Action("PostJobs", "EmployeeRegister")"
+                                }
+                                else if (result.userType == "ADMIN") {
+                                    window.location.href = "@Url.Action("dash_board", "Dash_Board")"
+                                }
+                                else if (result.userType == "Job Seeker") {
+                                    window.location.href = "@Url.Action("Index", "Home")"
+                                }
+
+                                else {
+                                    window.location.href = "@Url.Action("PostJobs", "EmployeeRegister")"
+                                }
+
+                            }
+                            else {
+                                toastr.error(result.Message, "Error", { positionClass: "toast-top-center" })
+                            }
+                        },
+                        error: function () {
+                            $('.loading').hide()
+                            toastr.error("Server Error", "Error", { positionClass: "toast-top-center" })
+                        }
+                    })
+                }
+            })
+
+
+
+
+
+
+
+        })
+    </script>
+
+
+</body>
+
+</html>
+
+
+ 

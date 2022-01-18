@@ -1,0 +1,127 @@
+﻿@model IEnumerable<MilkDairy.Models.ExportToMainDairy>
+@{
+    ViewBag.Title = "Member List";
+}
+
+<div class="loading" style="display:none">Loading</div>
+<a href="@Url.Action("MilkAquirement")" class="btn btn-col margin-top-20"><i class=" glyphicon glyphicon-plus-sign"></i>New Milk Aquirement</a>
+
+<div class="card margin-top-20">
+    <div class="card-header">
+        <i class="fa fa-user" aria-hidden="true"></i>
+        Milk Aquirement List
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover" id="Pro">
+            <thead>
+                <tr>
+                    <th>Slno</th>
+                    <th>Name</th>
+                    <th>Litre</th>
+                    <th>SNF</th>
+                    <th>Fat</th>
+                    <th>Price</th>
+                    <th>Total Amt</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var menu in Model)
+                {
+                    <tr>
+                        <td>@menu.slno </td>
+                        <td>@menu.dairy_name </td>
+                        <td>@menu.litre </td>
+                        <td>@menu.snf </td>
+                        <td>@menu.fat </td>
+                        <td>@menu.price </td>
+                        <td>@menu.total_amt </td>
+                        <td>@menu.date</td>
+
+
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = menu.slno })" class="btn btn-sm btn-info">
+                                <i><img src="../Content/Ninestars/assets/img/icons8-edit-24.png" /></i>
+                            </a>
+                            <button class="btn btn-sm p-delete btn-primary" data-profam-id="@menu.slno">
+                                <i><img src="../Content/Ninestars/assets/img/icons8-delete-bin-24.png" /></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+            $(document).ready(function () {
+
+                var table = $('#Pro').DataTable({
+                    lengthMenu: [[10, 15, 20, -1], [10, 15, 20, "ALL"]],
+                    responsive: true
+                });
+
+
+                $('#Pro').on("click", ".p-delete", function () {
+                    var button = $(this)
+
+                    bootbox.confirm({
+
+                        message: '<i class="fa fa-question-circle" aria-hidden="true"></i> Are you sure to delete this for ever.. ?',
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: "btn-defalut"
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: "btn-primary"
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                var id = button.attr('data-profam-id')
+                                $.ajax({
+                                    url: '/MilkAquirement/Delete/?id=' + id,
+                                    type: 'POST',
+                                    dataType: 'json'
+                                }).done(function (res) {
+                                    if (res) {
+                                        table.row(button.parents('tr')).remove().draw()
+                                        toastr.success("Deleted Successfully", "Success", { positionClass: "toast-top-center" })
+                                    } else {
+                                        toastr.error("Delete failed", "ERROR", { positionClass: "toast-top-center" })
+                                    }
+
+                                }).fail(function () {
+                                    toastr.error("Server Error", "ERROR", { positionClass: "toast-top-center" })
+                                })
+                            } else {
+
+                            }
+                        }
+                    });
+
+
+                })
+            })
+    </script>
+}
+
+
+
+
+
+
+
+

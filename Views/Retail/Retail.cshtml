@@ -1,0 +1,435 @@
+﻿@model MilkDairy.Models.RetailSale
+@{
+    ViewBag.Title = "Milk Aquirement";
+}
+
+<div class="loading" style="display:none">Loading</div>
+
+<style>
+    .centre {
+        font-weight: 600;
+    }
+</style>
+
+<div class="card margin-top-20">
+    <div class="card-header">
+      Retail Sales
+    </div>
+    <div class="card-body">
+        @using (Ajax.BeginForm("Save", "FeedsIssue", new AjaxOptions { HttpMethod = "POST" }, new { id = "Form", @class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+            <div class="row">
+
+                <div class="form-group col-md-3 ">
+                    @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })&nbsp; &nbsp;
+                    @Html.EditorFor(model => model.date, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.session, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.session, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.session, new[]{
+                                        new SelectListItem(){ Text = "Morning", Value = "Morning"},
+                                        new SelectListItem(){ Text = "Evening", Value = "Evening"}}, new { @class = "form-control" })
+
+                </div>
+
+                <div class="form-group col-md-3"  >
+                    @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(m => m.price, new SelectList(Model.prices_amt, "price", "price"), new { @class = "form-control idx",@id="price", @placeholder = "Enter Price" })
+                </div>
+
+                <div class="form-group col-md-3"  >
+                    @Html.LabelFor(model => model.litre, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.litre, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.litre, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter litre " ,@id="litre"} })
+                </div>
+               
+                <div class="form-group col-md-3"  >
+                    @Html.LabelFor(model => model.total, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Total", @id = "grand_total" } })
+                </div>
+                
+
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.payment, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.payment, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.payment, new[]{
+                                        new SelectListItem(){ Text = "Cash", Value = "Cash"},
+                                        new SelectListItem(){ Text = "Loan", Value = "Loan"}}, new { @class = "form-control", @id = "sale_type" })
+
+                </div>
+                <div class="form-group col-md-3" id="mems_id"style="display:none;">
+                    @Html.LabelFor(model => model.member_id, htmlAttributes: new { @class = "control-label " })
+                    @Html.ValidationMessageFor(model => model.member_id, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.member_id, new { htmlAttributes = new { @class = "form-control", @id = "mem_id", @placeholder = "Enter Member Id" } })
+                </div>
+
+
+
+                <div class="col-md-12 margin-top-30" style="float:right;">
+                    @if (Model.slno == 0)
+                    {
+                        <div style="float:right">
+                            <button type="submit" class="btn btn-col">Save</button>
+                            <button type="reset" class="btn btn-col">Reset</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class=" " style="float:right">
+                            <input type="submit" value="Update" class="btn btn-col" />
+                        </div>
+                    }
+
+
+                </div>
+                @Html.HiddenFor(model => model.slno)
+                @Html.HiddenFor(model => model.status)
+            </div>
+
+            @*<div class="  margin-top-10">
+                    <table class="table table-bordered table-hover data" id="Datatable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Litre</th>
+                                <th>Price</th>
+                                <th>Total Amt</th>
+                                <th>Session</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td class="centre"></td>
+                                <td class="centre"></td>
+                                <td></td>
+                                <td class="centre"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>*@
+        }
+
+    </div>
+    <div class="card-footer">
+        <div class="panel-footer">
+            @Html.ActionLink("New", "Retail", null, new { id = "backLink" }) &nbsp; /&nbsp;
+            @Html.ActionLink("Back to list", "Fetch", null, new { id = "backLink" })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#litre').on('keyup', function () {
+
+                var price = parseFloat($(this).val())
+                var no_of_bags = parseFloat($('#price').val())
+                var total = (no_of_bags * price)
+                $('#grand_total').val(total.toFixed(2));
+
+
+            })
+
+            $('#sale_type').change(function () {
+                if ($(this).val() == "Loan") {
+                    $('#mems_id').show()
+                }
+                else {
+                    $('#mems_id').hide();
+                }
+                
+            });
+
+ 
+
+
+        var table = $('#Datatable').DataTable({
+            ajax: {
+                url: "@Url.Action("FetchJson")",
+                dataSrc:""
+            },
+            lengthMenu: [[3, 5, 10, -1], [3, 5, 10, "ALL"]],
+            responsive: true,
+
+            columns: [
+                {
+                    data: "member_id"
+                },
+                 {
+                     data: "member_name"
+                 },
+                     {
+                         data: "litre"
+                     },
+                     {
+                         data: "price"
+                     },
+                      {
+                          data: "total_amt"
+                      },
+                        {
+                            data: "session"
+                        },
+
+                {
+                    data: "slno",
+                    render: function (data) {
+                        return '<button type="button" class="w3-white btn btn-primary btn-sm p-delete bg-danger "  data-profam-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-delete-bin-24.png" /></button><button type="button" class="margin-left btn  btn-info btn-sm btnside p-edit"  data-pro-id="' + data + '"><img src="../Content/Ninestars/assets/img/icons8-edit-24.png" /></i></button>'
+                    }
+                }
+
+            ],
+              "footerCallback": function (row, data, start, end, display) {
+                  var api = this.api(), data;
+
+                  // converting to interger to find total
+                  var intVal = function (i) {
+                      return typeof i === 'string' ?
+                          i.replace(/[\$,]/g, '') * 1 :
+                          typeof i === 'number' ?
+                          i : 0;
+                  };
+                  // computing column Total of the complete result
+                  var AmtTotal = api
+                         .column(4)
+                         .data()
+                         .reduce(function (a, b) {
+                             return intVal(a) + intVal(b);
+                         }, 0);
+                  var litre = api
+                       .column(2)
+                       .data()
+                       .reduce(function (a, b) {
+                           return intVal(a) + intVal(b);
+                       }, 0);
+                  $(api.column(1).footer()).html('Total');
+                  $(api.column(2).footer()).html(litre.toFixed(2));
+                  $(api.column(4).footer()).html(AmtTotal.toFixed(2));
+
+
+              }
+        })
+
+
+        $('#Datatable').on("click", ".p-delete", function () {
+            var button = $(this)
+            bootbox.confirm("Are you sure to delete this?", function (result) {
+                if (result) {
+                    var id = button.attr('data-profam-id')
+                    $.ajax({
+                        url: '/MilkAquirement/Delete/?id=' + id,
+                        type: 'POST',
+                        dataType: 'json'
+                    }).done(function (res) {
+                        if (res) {
+                            table.row(button.parent('tr')).remove().draw()
+                            table.ajax.reload()
+
+                            toastr.success("deleted Successfully", "Success", { positionClass: "toast-top-center" })
+                        } else {
+                            toastr.error("deletion failed", "ERROR", { positionClass: "toast-top-center" })
+                        }
+
+
+                    }).fail(function () {
+                        toastr.error("Server Error", "ERROR", { positionClass: "toast-top-center" })
+
+                    })
+                } else {
+
+                }
+            })
+        })
+        $('#Datatable').on("click", ".p-edit", function () {
+            var button = $(this)
+            var id = button.attr('data-pro-id')
+            document.location.href = '/MilkAquirement/Edit/?id=' + id
+        })
+
+        //saving
+        $('#Form').submit(function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation()
+            if ($('#Form').valid()) {
+                var action = $('#Form').attr('action')
+                var data = new FormData($('#Form').get(0));
+                $('.loading').show()
+                $.ajax({
+                    url: action,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.Success) {
+                            table.ajax.reload()
+                            $('.loading').hide();
+                            $('#Form').trigger("reset");
+                            toastr.success(result.Message, "Success", { positionClass: "toast-top-center" })
+                        }
+                        else {
+                            $('.loading').hide();
+                            toastr.error(result.Message, "Error", { positionClass: "toast-top-center" })
+                        }
+                        //setTimeout(function () {
+                        //    window.location.href = "/Master_keonicscompany/keonics";
+                        //}, 80)
+                    },
+                    error: function () {
+                        $('.loading').hide()
+                        toastr.error("Server Error", "Error", { positionClass: "toast-top-center" })
+                    }
+                })
+            }
+        })
+
+
+
+
+
+        $('#mem_id').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/MilkAquirement/MemberSearch/',
+                    data: "{'query': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var member_id = item.member_id;
+                            var member_name = item.member_name;
+                            var nominee_name = item.nominee_name;
+                            //var phone_no = item.phone_no;
+                            //var ifsc = item.ifsc;
+
+                            map[member_id] =
+                                {
+                                    member_id: member_id,
+                                    member_name: member_name,
+                                    nominee_name: nominee_name,
+                                    ////phone_no: phone_no,
+                                    ////ifsc: ifsc,
+                                };
+                            items.push(member_id);
+                        });
+                        response(items);
+                    },
+                    error: function (response) {
+                        toastr.error(response.responseText);
+                    },
+                    failure: function (response) {
+                        toastr.error(response.responseText);
+                    }
+                });
+            },
+
+
+            updater: function (item) {
+                $('#mem_id').val(map[item].member_id);
+                $('#member_name').val(map[item].member_name);
+                $('#nominee_name').val(map[item].nominee_name);
+                //$('#phone_no').val(map[item].phone_no);
+                //$('#ifsc').val(map[item].ifsc);
+                $('#litre').focus();
+                return item;
+            }
+        })
+
+
+        $('#member_name').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/MilkAquirement/MemberSearchName/',
+                    data: "{'query': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var member_id = item.member_id;
+                            var member_name = item.member_name;
+                            var nominee_name = item.nominee_name;
+
+                            map[member_name] =
+                                {
+                                    member_name: member_name,
+                                    member_id: member_id,
+                                    nominee_name: nominee_name,
+                                };
+                            items.push(member_name);
+                        });
+                        response(items);
+                    },
+                    error: function (response) {
+                        toastr.error(response.responseText);
+                    },
+                    failure: function (response) {
+                        toastr.error(response.responseText);
+                    }
+                });
+            },
+
+
+            updater: function (item) {
+                //$('#mem_id').val(map[item].member_id);
+                $('#member_name').val(map[item].member_name);
+                $('#nominee_name').val(map[item].nominee_name);
+                $('#litre').focus();
+                return item;
+            }
+        })
+
+
+
+
+
+
+
+
+    })
+    </script>
+
+
+
+}

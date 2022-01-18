@@ -1,0 +1,53 @@
+﻿ 
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.margin-top-10{
+    margin-top:10px;
+}
+.margin-top-20{
+    margin-top:20px;
+}
+.margin-top-30{
+    margin-top:30px;
+}
+
+.card-header{
+    background-color:#326690;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.form-control:focus{
+        border-color:#326690;
+    box-shadow:none;         
+    }
+
+.text-danger{
+    color:red;
+}
+
+.btn-col:focus{
+  border-color:#326690;
+    box-shadow:none;
+}
+
